@@ -56,12 +56,24 @@ def take_command():
         query = command.recognize_google(audio, language="en-us")
         print(f"User said: {query}\n")
     except Exception as error:
-        print(error)
         speak("Sorry, I didn't understand")
+        query = ""
+    finally:
+        return query
 
         
-print(f"Initializing {assistant_name}...")
-speak(f"initializing {assistant_name}...")
-sleep(0.5)
+# print(f"Initializing...")
+# speak(f"initializing {assistant_name}...")
+# sleep(0.5)
 wish_me()
-take_command()
+query = take_command()
+
+if "wikipedia" in query.lower():
+    speak("Searching Wikipedia...")
+    try:
+        query = query.replace("wikipedia", "")
+    except:
+        query = query.replace("Wikipedia", "")
+    results = wikipedia.summary(query, sentences=2)
+    print(results)
+    speak(results)
