@@ -14,13 +14,13 @@ speak_velocity = engine.getProperty("rate")
 assistant_name = "Yummi"
 
 engine.setProperty("voice", voices[1].id)
-engine.setProperty("rate", 160)
+engine.setProperty("rate", 170)
 
 def speak(text="there is nothing to say"):
     """
-    Write anything that you want jarvis to say.
+    Write anything that you want your assistant to say.
 
-    :param text: The text you want to pass to jarvis
+    :param text: The text you want to pass to your assistant
     """
     engine.say(text)
     engine.runAndWait()
@@ -41,25 +41,27 @@ def wish_me():
     else:
         speak("It's midnight, nice to see you master")
     
-    speak(f"I am {assistant_name}, how can I help you?")
+    # speak(f"How can I help you?")
 
 
 def take_command():
     command = sr.Recognizer()
     with sr.Microphone() as source:
         print("Listening...")
+        command.adjust_for_ambient_noise(source)
         audio = command.listen(source)
-    
+
     try:
         print("Recognizing...")
         query = command.recognize_google(audio, language="en-us")
-        print(f"User said: {query}")
+        print(f"User said: {query}\n")
     except Exception as error:
+        print(error)
         speak("Sorry, I didn't understand")
 
-
+        
 print(f"Initializing {assistant_name}...")
 speak(f"initializing {assistant_name}...")
-sleep(0.7)
+sleep(0.5)
 wish_me()
 take_command()
