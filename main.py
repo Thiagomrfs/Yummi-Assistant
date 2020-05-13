@@ -12,6 +12,7 @@ voices = engine.getProperty("voices")
 volume = engine.getProperty("volume")
 speak_velocity = engine.getProperty("rate")
 assistant_name = "Yummi"
+user_path_name = "Nilcy Marinho"
 
 engine.setProperty("voice", voices[1].id)
 engine.setProperty("rate", 170)
@@ -62,18 +63,44 @@ def take_command():
         return query
 
         
-# print(f"Initializing...")
-# speak(f"initializing {assistant_name}...")
-# sleep(0.5)
+print(f"Initializing {assistant_name}...")
+sleep(0.5)
 wish_me()
 query = take_command()
 
 if "wikipedia" in query.lower():
     speak("Searching Wikipedia...")
-    try:
-        query = query.replace("wikipedia", "")
-    except:
-        query = query.replace("Wikipedia", "")
+    query = query.replace("wikipedia", "")
     results = wikipedia.summary(query, sentences=2)
     print(results)
     speak(results)
+elif "open code" in query.lower():
+    speak("opening code")
+    code_path=f"C:\\Users\\{user_path_name}\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+
+elif "open youtube" in query.lower():
+    speak("opening youtube")
+    webbrowser.open("https:/youtube.com", new=2)
+elif "open google" in query.lower():
+    speak("opening google")
+    webbrowser.open("https:/google.com", new=2)
+elif "open github" in query.lower():
+    speak("opening github")
+    webbrowser.open("https:/github.com", new=2)
+
+elif "chill your mind" in query.lower():
+    speak("opening chill your mind radio")
+    webbrowser.open("https://www.youtube.com/watch?v=eQdA8dvsgQs", new=2)
+elif "play lo-fi" in query.lower():
+    speak("opening lo-fi radio")
+    webbrowser.open("https://www.youtube.com/watch?v=5qap5aO4i9A", new=2)
+
+elif "time now" in query.lower():
+    hour = datetime.datetime.now().hour
+    minute = datetime.datetime.now().minute
+    print(f"It is {hour} hours and {minute} minutes")
+    speak(f"It is {hour} hours and {minute} minutes")
+    
+
+sleep(1)
+os.system("cls")
