@@ -41,8 +41,6 @@ def wish_me():
         speak("Good Evening Master")
     else:
         speak("It's midnight, nice to see you master")
-    
-    # speak(f"How can I help you?")
 
 
 def take_command():
@@ -102,5 +100,5 @@ elif "time now" in query.lower():
     speak(f"It is {hour} hours and {minute} minutes")
     
 
-sleep(1)
+sleep(2)
 os.system("cls")
