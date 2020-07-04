@@ -39,10 +39,11 @@ def verify_int(value, accepted):
             try:
                 value = int(input("\033[31mPlease insert a valid value: \033[m"))
                 if value in accepted:
-                    break
                     return int(value)
+                    break
             except:
-                continue
+                pass
+
 
 def translate():
     msg("Select source language")

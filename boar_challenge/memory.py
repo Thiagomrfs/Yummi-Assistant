@@ -1,5 +1,6 @@
 import json
 import os
+import datetime
 from cipherdef_by_Biel import cipher
 
 
@@ -74,6 +75,17 @@ def get_birthdays():
         data = json.load(memory)
     return data
 
+def actualize_birthday_year():
+    data = get_birthdays()
+    for entry in data:
+        for name, birthday in entry.items():
+            today = datetime.date.today()
+            birthdate = datetime.date(birthday[0], birthday[1], birthday[2])
+            if today > birthdate:
+                birthday[0] += 1
+    with open("birthdays.json", "w", encoding="utf8") as memory:
+        json.dump(data, memory, indent=4, separators=(",", ":"), ensure_ascii=False)
+
 
 if "websites.json" not in os.listdir():
     with open("websites.json", "w+") as a:
@@ -99,3 +111,5 @@ if "passwords.json" not in os.listdir():
 if "birthdays.json" not in os.listdir():
     with open("birthdays.json", "w+") as a:
         a.write("[]")
+
+actualize_birthday_year()
