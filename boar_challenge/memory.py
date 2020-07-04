@@ -5,7 +5,11 @@ from cipherdef_by_Biel import cipher
 
 current = os.getcwd()
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
-os.chdir("memory")
+try:
+    os.chdir("memory")
+except:
+    os.system("mkdir memory")
+    os.chdir("memory")
 
 
 def add_website_to_memory(new_website):
@@ -47,8 +51,28 @@ def get_passwords_from_memory():
         data = json.load(memory)
     return data
 
-def remove_password_from_memory():
-    pass
+def remove_password_from_memory(removed_one):
+    with open("passwords.json", "r+") as memory:
+        data = json.load(memory)
+    
+    data.pop(data.index(removed_one))
+
+    with open("passwords.json", "w+", encoding="utf8") as memory:
+        json.dump(data, memory, indent=4, separators=(",", ":"), ensure_ascii=False)
+
+def add_birthday_reminder(query):
+    with open("birthdays.json", "r+") as memory:
+        data = json.load(memory)
+    
+    data.append(query)
+
+    with open("birthdays.json", "w+", encoding="utf8") as memory:
+        json.dump(data, memory, indent=4, separators=(",", ":"), ensure_ascii=False)
+
+def get_birthdays():
+    with open("birthdays.json", "r+") as memory:
+        data = json.load(memory)
+    return data
 
 
 if "websites.json" not in os.listdir():
@@ -67,6 +91,11 @@ if "websites.json" not in os.listdir():
         "Discord":"https://discord.com/"
     }
 ]""")
-elif "passwords.json" not in os.listdir():
+
+if "passwords.json" not in os.listdir():
     with open("passwords.json", "w+") as a:
+        a.write("[]")
+
+if "birthdays.json" not in os.listdir():
+    with open("birthdays.json", "w+") as a:
         a.write("[]")

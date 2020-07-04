@@ -47,13 +47,19 @@ def wish_me():
     else:
         speak(f"It's midnight, nice to see you {user}")
 
+def show_near_birthdays():
+    near = support.check_near_birthdays()
+    print(f"\033[36mNear birthdays: {', '.join(near)}\033[m")
+
 
 wish_me()
+show_near_birthdays()
 resp, option = support.menu(["Open website",
                             "Search meaning",
                             "Translate",
                             "Get passwords",
                             "Add password",
+                            "Add birthday reminder",
                             "Exit"])
 
 os.system("cls")
@@ -125,5 +131,22 @@ elif option == "Add password":
     query["site"] = input("For wich site do you want to store te password? ")
     query["password"] = input("Insert the password: ")
     memory.add_password_to_memory(query, main_password)
+elif option == "Add birthday reminder":
+    support.msg("Adding birthday reminder")
+    query = {}
+    today = datetime.date.today()
+    who = input("it's whose birthday? [name] ")
+    day = support.verify_int(input("what day will it happen? "), range(1, 31))
+    month = support.verify_int(input("what month will it happen? "), range(1, 13))
+    year = 0
+    if today.day > day:
+        if today.month > month:
+            year = today.year + 1
+        else:
+            year = today.year
+    else:
+        year = today.year
+    query[who] = [year, month, day]
+    memory.add_birthday_reminder(query)
 elif option == "Exit":
     exit()

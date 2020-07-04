@@ -1,7 +1,11 @@
 from googletrans import Translator
 from googletrans import LANGUAGES
 from time import sleep
+import datetime
 import os
+
+import memory
+
 
 def clear_screen():
     sleep(1)
@@ -51,3 +55,15 @@ def translate():
     translator = Translator()
     response = translator.translate(text, src=source, dest=destination)
     return response.text
+
+def check_near_birthdays():
+    data = memory.get_birthdays()
+    near = []
+    for entry in data:
+        for name, date in entry.items():
+            birthday = datetime.date(date[0], date[1], date[2])
+            today = datetime.date.today()
+            delta = birthday - today
+            if delta.days < 8:
+                near.append(name)
+    return near
