@@ -3,7 +3,7 @@ import datetime
 import wikipedia # pip install wikipedia
 import webbrowser
 import os
-import smtplib
+import getpass
 from time import sleep
 
 import support
@@ -18,6 +18,7 @@ speak_velocity = engine.getProperty("rate")
 engine.setProperty("voice", voices[1].id)
 engine.setProperty("rate", 160)
 
+
 def speak(text="there is nothing to say"):
     """
     Write anything that you want your assistant to say.
@@ -27,35 +28,38 @@ def speak(text="there is nothing to say"):
     engine.say(text)
     engine.runAndWait()
 
-
 def wish_me():
     """
     This function control the way your assistant will wish you
     """
     hour = int(datetime.datetime.now().hour)
-
+    user = getpass.getuser()
     if hour > 6 and hour < 12:
-        speak("Good Morning Master")
+        support.msg(f"Good morning {user}, how can I help you?")
+        speak(f"Good Morning {user}")
     elif hour >= 12 and hour < 18:
-        speak("Good Afternoon Master")
+        support.msg(f"Good afternoon {user}, how can I help you?")
+        speak(f"Good Afternoon {user}")
     elif hour >= 18 and hour <= 23:
-        speak("Good Evening Master")
+        support.msg(f"Good evening {user}, how can I help you?")
+        speak(f"Good Evening {user}")
     else:
-        speak("It's midnight, nice to see you master")
+        speak(f"It's midnight, nice to see you {user}")
 
-support.msg("Good evening master, how can I help you?")
+
 wish_me()
 resp, option = support.menu(["Open website",
                             "Search meaning",
-                            "Create shortcut",
-                            "Recieve command"
-                            "exit"])
+                            "Translate",
+                            "Get passwords",
+                            "Add pasword",
+                            "Exit"])
 
 os.system("cls")
 speak(f"You choosed: {option}")
 
 
-if resp == 1:
+if option == "Open website":
     support.msg("open website")
     websites = memory.get_websites_in_memory()
     query = []
@@ -80,25 +84,29 @@ if resp == 1:
         details[name] = url
         memory.add_website_to_memory(details)
     elif option == "remove website":
-        os.system("cls")
+        support.support.clear_screen()
         support.msg("which website do you want to remove?")
         index, removed_one = support.menu(query[:-2])
         for website in websites:
             for site, url in website.items():
                 if site == removed_one:
                     memory.remove_website_from_memory(website)
-elif resp == 2:
+    support.clear_screen()
+elif option == "Search meaning":
     support.msg("Search meaning")
     term = input("Wich term do you want to search about? ")
+    speak("searching")
     response = wikipedia.summary(term, sentences=2)
     print()
     print(response)
     speak(response)
-elif resp == 3:
+    support.clear_screen()
+elif option == "Translate":
+    output = support.translate()
+    print(f"The translated text is: {output}")
+elif option == "Get passwords":
     pass
-elif resp == 4:
+elif option == "Add password":
     pass
-elif resp == 5:
-    pass
-elif resp == 6:
-    pass
+elif option == "Exit":
+    exit()

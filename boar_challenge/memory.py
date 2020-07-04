@@ -30,6 +30,21 @@ def remove_website_from_memory(removed_one):
         json.dump(data, memory, indent=4, separators=(",", ":"), ensure_ascii=False)
 
 if "websites.json" not in os.listdir():
-    a = open("websites.json", "w+")
-    a.write("[]")
-    a.close()
+    with open("websites.json", "w+") as a:
+        a.write("""[
+    {
+        "Youtube":"https://youtube.com"
+    },
+    {
+        "Github":"https://github.com"
+    },
+    {
+        "Lofi":"https://www.youtube.com/watch?v=5qap5aO4i9A"
+    },
+    {
+        "Discord":"https://discord.com/"
+    }
+]""")
+elif "passwords.json" not in os.listdir():
+    with open("passwords.json", "w+") as a:
+        a.write("[]")

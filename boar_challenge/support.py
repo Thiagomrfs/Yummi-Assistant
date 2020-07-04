@@ -1,4 +1,14 @@
+from googletrans import Translator
+from googletrans import LANGUAGES
+from time import sleep
+import os
 
+def clear_screen():
+    sleep(1)
+    try:
+        os.system("cls")
+    except:
+        os.system("clear")
 
 def msg(text, cor=""):
     print(f"\033[{cor}m"+"="*(len(text)+4))
@@ -12,7 +22,7 @@ def menu(options:list):
         count +=1
     print()
     resp = verify_int(input("Please choose an option: "), range(1, count+1))
-    return resp, options[resp - 1]
+    return resp, list(options)[resp - 1]
 
 def verify_int(value, accepted):
     try:
@@ -29,3 +39,15 @@ def verify_int(value, accepted):
                     return int(value)
             except:
                 continue
+
+def translate():
+    msg("Select source language")
+    src, source = menu(LANGUAGES.values())
+    clear_screen()
+    msg("Select destination language")
+    dest, destination = menu(LANGUAGES.values())
+    clear_screen()
+    text = input("Insert the text that will be translated: ")
+    translator = Translator()
+    response = translator.translate(text, src=source, dest=destination)
+    return response.text
