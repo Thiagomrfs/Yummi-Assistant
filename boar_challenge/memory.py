@@ -1,5 +1,7 @@
 import json
 import os
+from cipherdef_by_Biel import cipher
+
 
 current = os.getcwd()
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -28,6 +30,26 @@ def remove_website_from_memory(removed_one):
 
     with open("websites.json", "w+", encoding="utf8") as memory:
         json.dump(data, memory, indent=4, separators=(",", ":"), ensure_ascii=False)
+
+def add_password_to_memory(query, indentifier):
+    with open("passwords.json", "r+") as memory:
+        data = json.load(memory)
+
+    encripted = cipher(query["password"], indentifier, 1)
+    finished = {query["site"]: encripted}
+    data.append(finished)
+
+    with open("passwords.json", "w+", encoding="utf8") as memory:
+        json.dump(data, memory, indent=4, separators=(",", ":"), ensure_ascii=False)
+
+def get_passwords_from_memory():
+    with open("passwords.json", "r+", encoding="utf8") as memory:
+        data = json.load(memory)
+    return data
+
+def remove_password_from_memory():
+    pass
+
 
 if "websites.json" not in os.listdir():
     with open("websites.json", "w+") as a:

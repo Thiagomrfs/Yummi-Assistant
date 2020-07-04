@@ -8,6 +8,7 @@ from time import sleep
 
 import support
 import memory
+from cipherdef_by_Biel import cipher
 
 
 engine = pyttsx3.init("sapi5")
@@ -52,7 +53,7 @@ resp, option = support.menu(["Open website",
                             "Search meaning",
                             "Translate",
                             "Get passwords",
-                            "Add pasword",
+                            "Add password",
                             "Exit"])
 
 os.system("cls")
@@ -105,8 +106,24 @@ elif option == "Translate":
     output = support.translate()
     print(f"The translated text is: {output}")
 elif option == "Get passwords":
-    pass
+    support.msg("Password manager")
+    print("\033[31mBe sure to write it correctly!!!\033[m")
+    main_password = input("Insert your main password: ")
+    data = memory.get_passwords_from_memory()
+    keys = []
+    for entry in data:
+        for key, value in entry.items():
+            decripted = cipher(value, main_password, 2)
+            print(f"\033[34m{key}\033[m - \033[33m{decripted}\033[m")
+    print("\033[mIf the passwords here has no sense, probably your main password is wrong!\033[m")
 elif option == "Add password":
-    pass
+    support.msg("Adding new password")
+    query = {}
+    print("\033[31mBe sure to remember this, you can't change it later!!!\033[m")
+    print("\033[31mAnd you need it to get the passwords, so write it out!!!\033[m")
+    main_password = input("Insert your main password: ")
+    query["site"] = input("For wich site do you want to store te password? ")
+    query["password"] = input("Insert the password: ")
+    memory.add_password_to_memory(query, main_password)
 elif option == "Exit":
     exit()
