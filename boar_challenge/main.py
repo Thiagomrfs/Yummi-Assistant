@@ -43,8 +43,8 @@ def wish_me():
     else:
         speak("It's midnight, nice to see you master")
 
-# support.msg("Good evening master, how can I help you?")
-# wish_me()
+support.msg("Good evening master, how can I help you?")
+wish_me()
 resp, option = support.menu(["Open website",
                             "Search meaning",
                             "Create shortcut",
@@ -70,6 +70,7 @@ if resp == 1:
     for website in websites:
         for site, url in website.items():
             if site == option:
+                speak("opening website")
                 webbrowser.open(url, new=2)
     if option == "add new website":
         details = {}
@@ -87,7 +88,12 @@ if resp == 1:
                 if site == removed_one:
                     memory.remove_website_from_memory(website)
 elif resp == 2:
-    pass
+    support.msg("Search meaning")
+    term = input("Wich term do you want to search about? ")
+    response = wikipedia.summary(term, sentences=2)
+    print()
+    print(response)
+    speak(response)
 elif resp == 3:
     pass
 elif resp == 4:
