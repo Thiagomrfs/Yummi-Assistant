@@ -14,10 +14,9 @@ engine = pyttsx3.init("sapi5")
 voices = engine.getProperty("voices")
 volume = engine.getProperty("volume")
 speak_velocity = engine.getProperty("rate")
-assistant_name = "Yummi"
 
-engine.setProperty("voice", voices[0].id) # 0 para inglês e 1 para português
-engine.setProperty("rate", 170)
+engine.setProperty("voice", voices[1].id)
+engine.setProperty("rate", 160)
 
 def speak(text="there is nothing to say"):
     """
@@ -44,4 +43,56 @@ def wish_me():
     else:
         speak("It's midnight, nice to see you master")
 
-wish_me()
+# support.msg("Good evening master, how can I help you?")
+# wish_me()
+resp, option = support.menu(["Open website",
+                            "Search meaning",
+                            "Create shortcut",
+                            "Recieve command"
+                            "exit"])
+
+os.system("cls")
+speak(f"You choosed: {option}")
+
+
+if resp == 1:
+    support.msg("open website")
+    websites = memory.get_websites_in_memory()
+    query = []
+
+    for website in websites:
+        for key in website:
+            query.append(key)
+    query.append("add new website")
+    query.append("remove website")
+    selected, option = support.menu(query)
+
+    for website in websites:
+        for site, url in website.items():
+            if site == option:
+                webbrowser.open(url, new=2)
+    if option == "add new website":
+        details = {}
+        name = input("What's the name of the website? ")
+        print("\033[32mTip: http:/mywebsite.com\033[m")
+        url = input("what's the url of the website? ")
+        details[name] = url
+        memory.add_website_to_memory(details)
+    elif option == "remove website":
+        os.system("cls")
+        support.msg("which website do you want to remove?")
+        index, removed_one = support.menu(query[:-2])
+        for website in websites:
+            for site, url in website.items():
+                if site == removed_one:
+                    memory.remove_website_from_memory(website)
+elif resp == 2:
+    pass
+elif resp == 3:
+    pass
+elif resp == 4:
+    pass
+elif resp == 5:
+    pass
+elif resp == 6:
+    pass
